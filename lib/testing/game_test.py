@@ -22,12 +22,12 @@ class TestGame:
         assert isinstance(game.title, str)
 
         # comment out the next two lines if using Exceptions
-        game.title = 2
-        assert game.title == "Skribbl.io"
+        # game.title = 2
+        # assert game.title == "Skribbl.io"
 
         # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     game.title = "not Skribbl.io"
+        with pytest.raises(Exception):
+            game.title = "not Skribbl.io"
 
     def test_title_len(self):
         """title is greater than 0 characters"""
