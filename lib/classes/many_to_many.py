@@ -43,17 +43,25 @@ class Game(Freeze):
 
     def players(self):
         # return [result.player for result in Result.all if isinstance(result.player, Player) and result.player not in list()]
-        game_list = list()
+        username_list = list()
+        player_list = list()
         for result in Result.all:
-            player = result.player
-            if isinstance(player, Player) and player.username not in game_list:
-                game_list.append(player)
-                breakpoint()
-        return game_list
-        # print(game_list)
+            if result.game == self:
+                player = result.player
+                if isinstance(player, Player) and player.username not in username_list:
+                    username_list.append(player.username)
+                    player_list.append(player)
+        return player_list
 
     def average_score(self, player):
-        pass
+        total_score_list = list()
+        for result in self.results():
+            if player.username == result.player.username and result.game.title == self.title:
+                total_score_list.append(result.score)
+        avg_score = round(sum(total_score_list)/len(total_score_list), 1)
+        return avg_score
+        # return sum(result for result in self.results() if player.username == result.player.username and result.game.title == self.title)/len(list())
+        # above commented possible can't work as need named list() to get len() for avg...
 
 class Player:
     def __init__(self, username):
