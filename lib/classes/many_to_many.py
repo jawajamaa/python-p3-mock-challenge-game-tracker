@@ -67,6 +67,9 @@ class Player:
     def __init__(self, username):
         self.username = username
 
+    # def __repr__(self):
+    #     return f"Username is: {self.username}"
+    
     @property
     def username(self):
         return self._username
@@ -79,16 +82,32 @@ class Player:
             raise ValueError ("Username must be a string between 2 and 16 characters in length")
 
     def results(self):
-        pass
-        # if isinstance(self.player, Player):
-        #     breakpoint()
-        #     return self.player
+        # below validation wasn't requested and as a result could fail tests though in this case it doesn't, but wasn't needed...
+        if isinstance(self, Player):
+            return [result for result in Result.all if result.player == self]
+            # player_results = list()
+            # for result in Result.all:
+            #     if result.player == self:
+            #         player_results.append(result)    
+            # return player_results
 
     def games_played(self):
-        pass
+        games_list = list()
+        for result in Result.all:
+            if result.player == self and result.game not in games_list:
+                games_list.append(result.game)
+        return games_list
 
     def played_game(self, game):
-        pass
+        return game in self.games_played()
+    # below doesn't work, but should?
+        # for game_played in self.games_played():
+        #         print(game_played)
+        #         print(game)
+        #         if game_played != game:
+        #             return False
+        #         return True
+                
 
     def num_times_played(self, game):
         pass
@@ -103,6 +122,9 @@ class Result(Freeze):
         Result.all.append(self)
         super().__init__()
 
+    # def __repr__(self):
+    #     return f"Player's name is: {self.player}\nGame is: {self.game}\nScore is: {self.score}"
+    
     @property
     def score(self):
         return self._score
@@ -113,3 +135,9 @@ class Result(Freeze):
             self._score = score
         else:
             raise ValueError ("Score needs to be an integer between 1 and 5000")
+
+# player = Player("Saaammmm")
+# print(player)
+# player = Player("Paxton")
+# print(player)
+# player = Player("this_username_is_too_long")
