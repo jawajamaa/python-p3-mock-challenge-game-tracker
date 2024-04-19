@@ -1,22 +1,4 @@
-class Freeze:
-    # Freeze attributes to make immutable
-    _frozen = False
-
-    def __init__(self):
-        self._frozen = True
-
-    def __delattr__(self, *args, **kwargs):
-        if self._frozen:
-            raise AttributeError("This object is Frozen; ie immutable!")
-        object.__delattr__(self, *args, **kwargs)
-
-    def __setattr__(self, *args, **kwargs):
-        if self._frozen:
-            raise AttributeError("This object is Frozen; ie immutable!")   
-        object.__setattr__(self, *args, **kwargs)
-
-
-class Game(Freeze):
+class Game():
     def __init__(self, title):
         self.title = title
         super().__init__()
@@ -27,7 +9,7 @@ class Game(Freeze):
     
     @title.setter
     def title(self, title):
-        if isinstance(title, str) and len(title) > 0:
+        if isinstance(title, str) and not hasattr(self,"title") and len(title) > 0:
             self._title = title
         else:
             raise ValueError ("Title must be a string more than 0 characters in length")
@@ -110,9 +92,10 @@ class Player:
                 
 
     def num_times_played(self, game):
-        pass
+        games_played = [result.game for result in self.results()]
+        return games_played.count(game)
 
-class Result(Freeze):
+class Result():
     all = list()
 
     def __init__(self, player, game, score):
@@ -131,7 +114,7 @@ class Result(Freeze):
     
     @score.setter
     def score(self, score):
-        if isinstance(score, int) and 1 <= score <=5000:
+        if isinstance(score, int) and not hasattr(self,"score") and 1 <= score <=5000:
             self._score = score
         else:
             raise ValueError ("Score needs to be an integer between 1 and 5000")
